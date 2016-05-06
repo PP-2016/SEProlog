@@ -22,17 +22,28 @@ sintoma(dorNoCorpo, chikungunya).
 sintoma(hipersensibilidadeLuz, chikungunya).
 sintoma(feridasNaBoca, chikungunya).
 
-# Modo de leitura febre ---     "No Zika a Febre é baixa"
-febre(zika, baixa)
-febre(dengue, alta)
-febre(chikungunya,alta)
+%Modo de leitura febre ---     "No Zika a Febre é baixa"
+febre(zika, baixa).
+febre(dengue, alta).
+febre(chikungunya,alta).
 
-# Modo de leitura dorCabeca ---     "No Zika a dor de cabeça é baixa"
-dorCabeca(zika, fraca)
-dorCabeca(dengue, forte)
-dorCabeca(chikungunya, fraca)
+%Modo de leitura dorCabeca ---     "No Zika a dor de cabeça é baixa"
+dorCabeca(zika, fraca).
+dorCabeca(dengue, forte).
+dorCabeca(chikungunya, fraca).
 
-# Modo de leitura dorNoCorpo ---     "No Zika a dorno corpo é nas articulacoes"
-dorNoCorpo(zika, articulacoes)
-dorNoCorpo(dengue, muscular)
-dorNoCorpo(chikungunya, articulacoes)
+%Modo de leitura dorNoCorpo ---     "No Zika a dorno corpo é nas articulacoes"
+dorNoCorpo(zika, articulacoes).
+dorNoCorpo(dengue, muscular).
+dorNoCorpo(chikungunya, articulacoes).
+
+menu:-
+    write('menu'), nl,
+    write('1 Dengue'), nl,
+    read(X),
+    option(X),
+    X==0,!.
+
+option(0):- !.
+option(1):- write('lala'),nl,!.
+option(2):- !.

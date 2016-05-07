@@ -23,9 +23,10 @@ dorCabeca(dengue, forte).
 dorNoCorpo(zika,chikungunya, articulacoes).
 dorNoCorpo(dengue, muscular).
 
-probabilidade(zika,50).
-probabilidade(chikungunya,30).
-probabilidade(dengue,100).
+
+probabilidade(zika,10).
+probabilidade(chikungunya,0).
+probabilidade(dengue,0).
 
 %diagnostico(paciente,zika).
 %diagnostico(paciente,chikungunya).
@@ -39,32 +40,31 @@ diagnostico(X,dengue):- probabilidade(dengue,Z), probabilidade(chikungunya,K), p
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 menu:-
     write('Voce esta com febre?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
     read(X),
-    optionFebre(X),
-    X==0,!.
+    optionFebre(X).
 
-optionFebre(0):- !.
-optionFebre(1):- write('lala'),nl,!.
+optionFebre(0):- write('Nenhum diagnostico'),!.
+optionFebre(1):- optionFebreMenu(),!.
 optionFebre(2):- cabecaMenu(),!.
+
+
+optionFebreMenu:-
+    write('A febre eh maior que 39?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(W),
+    opcao(W).
+
+opcao(1):- memoriza(Z),!.
+%opcao(2):- chamar modificador de probabilidade menor, chamar proxima pergunta.
+
+dynamic probabilidade/2.
+memoriza():-
+    retract(probabilidade(zika,_)),assertz(probabilidade(zika,10)).
 
 
 cabecaMenu:-

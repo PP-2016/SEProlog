@@ -23,10 +23,11 @@ dorCabeca(dengue, forte).
 dorNoCorpo(zika,chikungunya, articulacoes).
 dorNoCorpo(dengue, muscular).
 
-
-probabilidade(zika,10).
+:-dynamic probabilidade/2.
+probabilidade(zika,0).
 probabilidade(chikungunya,0).
 probabilidade(dengue,0).
+
 
 %diagnostico(paciente,zika).
 %diagnostico(paciente,chikungunya).
@@ -62,9 +63,12 @@ optionFebreMenu:-
 opcao(1):- memoriza(Z),!.
 %opcao(2):- chamar modificador de probabilidade menor, chamar proxima pergunta.
 
-dynamic probabilidade/2.
-memoriza():-
-    retract(probabilidade(zika,_)),assertz(probabilidade(zika,10)).
+
+memoriza(X):-
+    probabilidade(dengue,Y),
+    Z is Y+10,
+    retract(probabilidade(X,_)),
+    assert(probabilidade(X,Z)).
 
 
 cabecaMenu:-

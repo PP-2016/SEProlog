@@ -24,15 +24,26 @@ probabilidade(chikungunya,0).
 probabilidade(dengue,0).
 
 :-dynamic paciente/1.
-%diagnostico(paciente,zika).
-%diagnostico(paciente,chikungunya).
-%diagnostico(paciente,dengue).
 
 %Regras
 
-diagnostico(X,zika):- probabilidade(zika,Z), probabilidade(chikungunya,K), probabilidade(dengue,T), Z>K, Z>T.
-diagnostico(X,chikungunya):- probabilidade(chikungunya,Z), probabilidade(zika,K), probabilidade(dengue,T), Z>K, Z>T.
-diagnostico(X,dengue):- probabilidade(dengue,Z), probabilidade(chikungunya,K), probabilidade(zika,T), Z>K, Z>T.
+diagnostico(zika):- paciente(febreBaixa), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
+                    paciente(fadiga), paciente(conjuntivite).
+
+%diagnostico(X,zika):- probabilidade(zika,Z), probabilidade(chikungunya,K), probabilidade(dengue,T), Z>K, Z>T.
+
+diagnostico(chikungunya):- paciente(febreAlta), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
+                           paciente(fadiga), paciente(nauseas), paciente(hipersensibilidadeLuz),
+                           paciente(feridasNaBoca).
+
+%diagnostico(X,chikungunya):- probabilidade(chikungunya,Z), probabilidade(zika,K), probabilidade(dengue,T), Z>K, Z>T.
+
+
+diagnostico(dengue):- paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo),
+                      paciente(fadiga), paciente(nauseas).
+
+
+%diagnostico(X,dengue):- probabilidade(dengue,Z), probabilidade(chikungunya,K), probabilidade(zika,T), Z>K, Z>T.
 
 menu:- febreMenu().
 
@@ -96,7 +107,7 @@ articulacoesMenu:-
     read(Y),
     optionArticulacoes(Y).
 
-optionArticulacoes(1):- memoriza(dorNoCorpo), nauseaMenu().
+optionArticulacoes(1):- memoriza(dorNasArticulacoes), nauseaMenu().
 optionArticulacoes(2):- nauseaMenu().
 
 
@@ -147,9 +158,11 @@ feridasNaBocaMenu:-
     read(Y),
     optionFeridasNaBoca(Y).
 
-optionFeridasNaBoca(1):- memoriza(feridasNaBoca).
-optionFeridasNaBoca(2):- !.
+optionFeridasNaBoca(1):- memoriza(feridasNaBoca), diagnosticar().
+optionFeridasNaBoca(2):- diagnosticar().
 
+diagnosticar:-
+    write('Criando diagnostico. . .'), nl,
+    diagnostico(X).
 
-%paciente(X).
-%findall(Doenca,sintoma(X,Doenca),L).
+%paciente(X),findall(Doenca,sintoma(X,Doenca),L).

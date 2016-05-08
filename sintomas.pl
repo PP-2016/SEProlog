@@ -162,16 +162,8 @@ optionFeridasNaBoca(2):- diagnosticar().
 
 diagnosticar:-
     write('Criando diagnostico. . .'), nl,
-    diagnostico(X), fail,
-    write('Deseja fazer um novo teste?'), nl,
-    write('1 Sim'), nl,
-    write('2 Nao'), nl,
-    read(Y),
-    optionNewMenu(Y).
+    diag().
 
-optionNewMenu(1):- menu().
-optionNewMenu(2):- write('Fim do diagnostico'), !.
-
-%probabilidade(paciente,Doenca) :- paciente(Sintoma), sintoma(Sintoma,Doenca),memoriza(podeTer(paciente,Doenca)), repete.
-
-%paciente(X),findall(Doenca,sintoma(X,Doenca),L).
+diag :-
+    diagnostico(X),
+    fail.

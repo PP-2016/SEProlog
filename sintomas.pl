@@ -1,34 +1,29 @@
 %Modo de leitura sintomas ---     "Febre é sintoma de Zika"
 
-sintoma(febre, zika, dengue, chikungunya).
-sintoma(dorCabeca, zika, dengue, chikungunya).
-sintoma(dorNoCorpo, zika, dengue, chikungunya).
-sintoma(fadiga, zika, dengue, chikungunya).
-sintoma(nauseas, dengue, chikungunya).
-sintoma(nauseas, dengue, chikungunya).
+sintoma(febreBaixa, zika).
+sintoma(febreAlta, dengue).
+sintoma(febreAlta, chikungunya).
+sintoma(dorCabecaFraca, zika).
+sintoma(dorCabecaFraca, chikungunya).
+sintoma(dorCabecaForte, dengue).
+sintoma(dorNasArticulacoes, zika).
+sintoma(dorNasArticulacoes, chikungunya).
+sintoma(dorNoCorpo, dengue).
+sintoma(fadiga, zika).
+sintoma(fadiga, dengue).
+sintoma(fadiga, chikungunya).
+sintoma(nauseas, dengue).
+sintoma(nauseas, chikungunya).
 sintoma(conjuntivite, zika).
 sintoma(hipersensibilidadeLuz, chikungunya).
 sintoma(feridasNaBoca, chikungunya).
-
-%Modo de leitura febre ---     "No Zika a Febre é baixa"
-febre(zika, baixa).
-febre(dengue,chikungunya, alta).
-
-%Modo de leitura dorCabeca ---     "No Zika a dor de cabeça é baixa"
-dorCabeca(zika,chikungunya, fraca).
-dorCabeca(dengue, forte).
-
-
-%Modo de leitura dorNoCorpo ---     "No Zika a dorno corpo é nas articulacoes"
-dorNoCorpo(zika,chikungunya, articulacoes).
-dorNoCorpo(dengue, muscular).
 
 :-dynamic probabilidade/2.
 probabilidade(zika,0).
 probabilidade(chikungunya,0).
 probabilidade(dengue,0).
 
-
+:-dynamic paciente/1.
 %diagnostico(paciente,zika).
 %diagnostico(paciente,chikungunya).
 %diagnostico(paciente,dengue).
@@ -39,70 +34,122 @@ diagnostico(X,zika):- probabilidade(zika,Z), probabilidade(chikungunya,K), proba
 diagnostico(X,chikungunya):- probabilidade(chikungunya,Z), probabilidade(zika,K), probabilidade(dengue,T), Z>K, Z>T.
 diagnostico(X,dengue):- probabilidade(dengue,Z), probabilidade(chikungunya,K), probabilidade(zika,T), Z>K, Z>T.
 
+menu:- febreMenu().
 
-
-menu:-
+febreMenu:-
     write('Voce esta com febre?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
     read(X),
     optionFebre(X).
 
-optionFebre(0):- write('Nenhum diagnostico'),!.
-optionFebre(1):- optionFebreMenu(),!.
-optionFebre(2):- cabecaMenu(),!.
-
+optionFebre(1):- optionFebreMenu().
+optionFebre(2):- cabecaMenu().
 
 optionFebreMenu:-
     write('A febre eh maior que 39?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
     read(W),
-    opcao(W).
+    opcaoFebre(W).
 
-opcao(1):- memoriza(Z),!.
-%opcao(2):- chamar modificador de probabilidade menor, chamar proxima pergunta.
-
+opcaoFebre(1):- memoriza(febreAlta),cabecaMenu(),!.
+opcaoFebre(2):- memoriza(febreBaixa),cabecaMenu(),!.
 
 memoriza(X):-
-    probabilidade(dengue,Y),
-    Z is Y+10,
-    retract(probabilidade(X,_)),
-    assert(probabilidade(X,Z)).
-
+    assert(paciente(X)).
 
 cabecaMenu:-
     write('Voce esta com dor de cabeca?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
-    read(Y),
-    optionCabeca(Y),
-    Y==0,!.
+    read(W),
+    optionCabeca(W).
 
-optionCabeca(0):- !.
-optionCabeca(1):- write('lala'),nl,!.
+optionCabeca(1):- optionCabecaMenu().
+optionCabeca(2):- corpoMenu().
 
+optionCabecaMenu:-
+    write('Como é a dor de cabeca?'), nl,
+    write('1 Forte'), nl,
+    write('2 Fraca'), nl,
+    read(W),
+    opcaoCabeca(W).
+
+opcaoCabeca(1):- memoriza(dorCabecaForte),corpoMenu().
+opcaoCabeca(2):- memoriza(dorCabecaFraca),corpoMenu().
 
 corpoMenu:-
-    write('Voce esta com dor no corpo?'), nl,
+    write('Voce esta com dor muscular no corpo?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
     read(Y),
-    optionCorpo(Y),
-    Y==0,!.
+    optionCorpo(Y).
 
-optionCorpo(0):- !.
-optionCorpo(1):- write('lala'),nl,!.
+optionCorpo(1):- memoriza(dorNoCorpo), articulacoesMenu().
+optionCorpo(2):- articulacoesMenu().
+
+articulacoesMenu:-
+    write('Voce esta com dor nas suas articulacoes?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionArticulacoes(Y).
+
+optionArticulacoes(1):- memoriza(dorNoCorpo), nauseaMenu().
+optionArticulacoes(2):- nauseaMenu().
+
 
 nauseaMenu:-
-    write('Voce esta com dor de cabeca?'), nl,
+    write('Voce esta com nauseas?'), nl,
     write('1 Sim'), nl,
     write('2 Nao'), nl,
     read(Y),
-    optionNause(Y),
-    Y==0,!.
+    optionNause(Y).
 
-optionCabeca(0):- !.
-optionCabeca(1):- write('lala'),nl,!.
+optionNause(1):- memoriza(nauseas),fadigaMenu().
+optionNause(2):- fadigaMenu().
+
+fadigaMenu:-
+    write('Voce esta se sentido fadigado(a)?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionFadiga(Y).
+
+optionFadiga(1):- memoriza(fadiga), conjuntiviteMenu().
+optionFadiga(2):- conjuntiviteMenu().
+
+conjuntiviteMenu:-
+    write('Voce desenvolveu conjuntivite?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionConjuntivite(Y).
+
+optionConjuntivite(1):- memoriza(conjuntivite), hyperSensibilidadeLuzMenu().
+optionConjuntivite(2):- hyperSensibilidadeLuzMenu().
+
+hyperSensibilidadeLuzMenu:-
+    write('Voce desenvolveu uma hiper sensibilidade à luz?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionHiperSensibilidadeLuz(Y).
+
+optionHiperSensibilidadeLuz(1):- memoriza(hipersensibilidadeLuz), feridasNaBocaMenu().
+optionHiperSensibilidadeLuz(2):- feridasNaBocaMenu().
+
+feridasNaBocaMenu:-
+    write('Voce desenvolveu feridas na boca?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionFeridasNaBoca(Y).
+
+optionFeridasNaBoca(1):- memoriza(feridasNaBoca).
+optionFeridasNaBoca(2):- !.
 
 
+%paciente(X).
+%findall(Doenca,sintoma(X,Doenca),L).

@@ -27,23 +27,22 @@ probabilidade(dengue,0).
 
 %Regras
 
-diagnostico(zika):- paciente(febreBaixa), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
-                    paciente(fadiga), paciente(conjuntivite).
+diagnostico(zika):- (paciente(febreBaixa), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
+                    paciente(fadiga), paciente(conjuntivite)), write("Probabilidade de possuir Zika"),nl ;
+                    (paciente(conjuntivite), paciente(febreBaixa)), write("Probabilidade de possuir Zika"),nl .
 
-%diagnostico(X,zika):- probabilidade(zika,Z), probabilidade(chikungunya,K), probabilidade(dengue,T), Z>K, Z>T.
 
-diagnostico(chikungunya):- paciente(febreAlta), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
+diagnostico(chikungunya):- (paciente(febreAlta), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
                            paciente(fadiga), paciente(nauseas), paciente(hipersensibilidadeLuz),
-                           paciente(feridasNaBoca).
+                           paciente(feridasNaBoca)), write("Probabilidade de possuir Chikungunya"),nl ;
+                           (paciente(hipersensibilidadeLuz), paciente(feridasNaBoca),
+                           paciente(febreAlta)), write("Probabilidade de possuir Chikungunya"),nl .
 
-%diagnostico(X,chikungunya):- probabilidade(chikungunya,Z), probabilidade(zika,K), probabilidade(dengue,T), Z>K, Z>T.
+diagnostico(dengue):- (paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo),
+                      paciente(fadiga), paciente(nauseas)), write("Probabilidade de possuir Dengue"),nl ;
+                      (paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo)) ,
+                      write("Probabilidade de possuir Dengue"),nl .
 
-
-diagnostico(dengue):- paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo),
-                      paciente(fadiga), paciente(nauseas).
-
-
-%diagnostico(X,dengue):- probabilidade(dengue,Z), probabilidade(chikungunya,K), probabilidade(zika,T), Z>K, Z>T.
 
 menu:- febreMenu().
 
@@ -163,6 +162,16 @@ optionFeridasNaBoca(2):- diagnosticar().
 
 diagnosticar:-
     write('Criando diagnostico. . .'), nl,
-    diagnostico(X).
+    diagnostico(X), fail,
+    write('Deseja fazer um novo teste?'), nl,
+    write('1 Sim'), nl,
+    write('2 Nao'), nl,
+    read(Y),
+    optionNewMenu(Y).
+
+optionNewMenu(1):- menu().
+optionNewMenu(2):- write('Fim do diagnostico'), !.
+
+%probabilidade(paciente,Doenca) :- paciente(Sintoma), sintoma(Sintoma,Doenca),memoriza(podeTer(paciente,Doenca)), repete.
 
 %paciente(X),findall(Doenca,sintoma(X,Doenca),L).

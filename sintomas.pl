@@ -28,23 +28,28 @@ probabilidade(dengue,0).
 %Regras
 
 diagnostico(zika):- (paciente(febreBaixa), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
-                    paciente(fadiga), paciente(conjuntivite)), write("Probabilidade de possuir Zika"),nl ;
+                    paciente(fadiga), paciente(conjuntivite)), write("Probabilidade alta de possuir Zika"),nl ;
                     (paciente(conjuntivite), paciente(febreBaixa)), write("Probabilidade de possuir Zika"),nl .
 
 
 diagnostico(chikungunya):- (paciente(febreAlta), paciente(dorCabecaFraca), paciente(dorNasArticulacoes),
                            paciente(fadiga), paciente(nauseas), paciente(hipersensibilidadeLuz),
-                           paciente(feridasNaBoca)), write("Probabilidade de possuir Chikungunya"),nl ;
+                           paciente(feridasNaBoca)), write("Probabilidade alta de possuir Chikungunya"),nl ;
                            (paciente(hipersensibilidadeLuz), paciente(feridasNaBoca),
                            paciente(febreAlta)), write("Probabilidade de possuir Chikungunya"),nl .
 
 diagnostico(dengue):- (paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo),
-                      paciente(fadiga), paciente(nauseas)), write("Probabilidade de possuir Dengue"),nl ;
+                      paciente(fadiga), paciente(nauseas)), write("Probabilidade alta de possuir Dengue"),nl ;
                       (paciente(febreAlta), paciente(dorCabecaForte), paciente(dorNoCorpo)) ,
                       write("Probabilidade de possuir Dengue"),nl .
 
 
-menu:- febreMenu().
+menu:-
+    write('Bem vindo ao Diagnostic!!!'),nl,
+    write('Tenha em mente que este e somente um pre diagnostico. '),
+    write('Este sistema nao substitui a necessidade de uma consulta medica!'), nl,nl,nl,
+    write('Vamos comecar nosso pre diagnostico. . .'), nl,nl,nl,
+    febreMenu().
 
 febreMenu:-
     write('Voce esta com febre?'), nl,
@@ -161,7 +166,7 @@ optionFeridasNaBoca(1):- memoriza(feridasNaBoca), diagnosticar().
 optionFeridasNaBoca(2):- diagnosticar().
 
 diagnosticar:-
-    write('Criando diagnostico. . .'), nl,
+    write('Criando diagnostico. . .'), nl,nl,nl,
     diag().
 
 diag :-
